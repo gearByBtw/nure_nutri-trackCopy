@@ -19,12 +19,6 @@ export const Nav = () => {
           gap: 10,
         }}
       >
-        {isAdmin && (
-          <Link to="/users">
-            <Button color="success">Users</Button>
-          </Link>
-        )}
-
         <Link to="/">
           <Button color="success">Home</Button>
         </Link>
@@ -32,6 +26,12 @@ export const Nav = () => {
         <Link to="/calories">
           <Button color="success">Calories</Button>
         </Link>
+
+        {isAdmin && (
+          <Link to="/users">
+            <Button color="success">Users</Button>
+          </Link>
+        )}
       </div>
     </div>
   );

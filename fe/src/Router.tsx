@@ -12,7 +12,7 @@ const queryClient = new QueryClient();
 const Router = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
+      <BrowserRouter basename="/nure_nutri-track">
         <Routes>
           <Route path="/" element={<App />}>
             <Route index element={<>Welcome to NutriTrack</>} />

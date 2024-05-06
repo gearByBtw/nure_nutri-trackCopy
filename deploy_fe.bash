@@ -24,9 +24,11 @@ fi
 sed -i '' 's|href="/logo.png"|href="/nure_nutri-track/logo.png"|g' ../docs/index.html
 sed -i '' 's|/assets/|/nure_nutri-track/assets/|g' ../docs/index.html
 
-git add ../docs
+cd ..
 
-git commit -m "Deploying to GitHub Pages"
+git add .
+
+git commit -m "Deploying to GitHub Pages: $1"
 
 if [ $? -ne 0 ]; then
     echo "Error: Commit operation failed."
