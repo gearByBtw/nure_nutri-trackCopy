@@ -1,13 +1,26 @@
-import { ReactNode } from "react";
+import { ReactNode, createContext, useContext } from "react";
 import { useUserGetQuery } from "../features/useUserGetQuery";
+import { UserType } from "../types/User";
 
-export const Fallback = ({
+export const UserContext = createContext<UserType>({} as UserType);
+
+export const RoleFallback = ({
   type,
   children,
 }: {
-  type: "admin" | "user";
+  type: UserType["role"];
   children: ReactNode;
 }) => {
+  const user = useContext(UserContext);
+
+  if (user.role !== type) {
+    return <div>Access denied</div>;
+  }
+
+  return children;
+};
+
+export const AuthFallback = ({ children }: { children: ReactNode }) => {
   const { isLoading, data } = useUserGetQuery({ token: "1" });
 
   if (isLoading) {
@@ -22,9 +35,5 @@ export const Fallback = ({
     return <div>Not authorized. Redirecting...</div>;
   }
 
-  if (data.role !== type) {
-    return <div>Access denied</div>;
-  }
-
-  return children;
+  return <UserContext.Provider value={data}>{children}</UserContext.Provider>;
 };
