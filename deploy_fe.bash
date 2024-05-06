@@ -21,9 +21,6 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-sed -i '' 's|href="/logo.png"|href="/nure_nutri-track/logo.png"|g' ../docs/index.html
-sed -i '' 's|/assets/|/nure_nutri-track/assets/|g' ../docs/index.html
-
 cd ..
 
 git add .
