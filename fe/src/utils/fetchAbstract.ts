@@ -3,9 +3,9 @@ import { getBaseUrl } from "./getBaseUrl";
 export const fetchAbstract = async (
   urlPart: string,
   method: string,
-  body?: any,
+  body?: object,
 ) => {
-  const response = await fetch(getBaseUrl() + urlPart + "/", {
+  const response = await fetch(getBaseUrl() + urlPart, {
     method: method,
     headers: {
       "Content-Type": "application/json",
