@@ -4,10 +4,13 @@
     build:
       context: .
       dockerfile: WebApi/Dockerfile
+    ports:
+      - 8080:80
     depends_on:
       - mssql
   mssql:
     image: mcr.microsoft.com/mssql/server
+    container_name: mssql
     environment:
       SA_PASSWORD: "YourStrong!Passw0rd"
       ACCEPT_EULA: "Y"

@@ -5,17 +5,34 @@ services:
       context: "C:\\Users\\khanina.d\\Desktop\\nure_nutri-track\\be\\WebApi"
       dockerfile: "WebApi/Dockerfile"
       target: "base"
+      args:
+        BUILD_CONFIGURATION: "Debug"
     command: []
     entrypoint:
-    - "dotnet"
-    - "/app/bin/Debug/net7.0/WebApi.dll"
+    - "/opt/rider-debugger/linux-x64/JetBrains.Debugger.Worker"
+    - "--runtimeconfig"
+    - "/opt/rider-debugger/JetBrains.Debugger.Worker.runtimeconfig.json"
+    - "--mode=server"
+    - "--frontend-port=57100"
+    - "--backend-port=57300"
+    - "--timeout=60"
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      RIDER_DEBUGGER_LOG_DIR: "/var/opt/rider-debugger"
+      RESHARPER_LOG_CONF: "/etc/opt/rider-debugger/backend-log.xml"
     image: "webapi:dev"
-    ports: []
+    ports:
+    - "127.0.0.1:57000:57100"
+    - "127.0.0.1:57200:57300"
     volumes:
     - "C:\\Users\\khanina.d\\.nuget\\packages:/root/.nuget/packages"
     - "C:\\Users\\khanina.d\\Desktop\\nure_nutri-track\\be\\WebApi\\WebApi:/app:rw"
     - "C:\\Users\\khanina.d\\Desktop\\nure_nutri-track\\be\\WebApi:/src:rw"
+    - "C:\\Users\\khanina.d\\AppData\\Local\\JetBrains\\RiderRemoteDebugger\\2024.1\\\
+      Linux64:/opt/rider-debugger"
+    - "C:\\Users\\khanina.d\\AppData\\Local\\JetBrains\\JetBrains Rider 2023.2.3\\\
+      bin:/etc/opt/rider-debugger/backend-log.xml"
+    - "C:\\Users\\khanina.d\\AppData\\Local\\JetBrains\\Rider2024.1\\log\\DebuggerWorker\\\
+      JetBrains.Debugger.Worker.2024_5_06_14_29_16:/var/opt/rider-debugger:rw"
     working_dir: "/app"
