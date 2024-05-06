@@ -1,0 +1,21 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  webapi:
+    build:
+      context: "C:\\Users\\khanina.d\\Desktop\\nure_nutri-track\\be\\WebApi"
+      dockerfile: "WebApi/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net7.0/WebApi.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "webapi:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\khanina.d\\.nuget\\packages:/root/.nuget/packages"
+    - "C:\\Users\\khanina.d\\Desktop\\nure_nutri-track\\be\\WebApi\\WebApi:/app:rw"
+    - "C:\\Users\\khanina.d\\Desktop\\nure_nutri-track\\be\\WebApi:/src:rw"
+    working_dir: "/app"
