@@ -4,6 +4,8 @@ import App from "./App";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Users } from "./routes/Users";
 import UsersAdd from "./routes/UsersAdd";
+import { CalorieNote } from "./routes/CalorieNote";
+import CalorieNoteAdd from "./routes/CalorieNoteAdd";
 
 const queryClient = new QueryClient();
 
@@ -18,7 +20,14 @@ const Router = () => {
 
             <Route path="users" element={<Users />} />
             <Route path="users/add" element={<UsersAdd />} />
-            <Route path="users/add/:userId" element={<UsersAdd />} />
+            <Route path="users/edit/:userId" element={<UsersAdd />} />
+
+            <Route path="calories" element={<CalorieNote />} />
+            <Route path="calories/add" element={<CalorieNoteAdd />} />
+            <Route
+              path="calories/edit/:calorieId"
+              element={<CalorieNoteAdd />}
+            />
           </Route>
         </Routes>
       </BrowserRouter>

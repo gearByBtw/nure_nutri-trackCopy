@@ -2,29 +2,30 @@
 
 ## Features tracking
 
-_checked - to test. Crossed - done_
+_Checked - to test. Crossed - done_
 
 ### FE 1
 
-- [ ] Облік калорій поточного дня та планування калорій на наступний день.
-- [ ] Water crud
+- [x] CaloriesNotes for the day
+- [ ] Exercises crud(Admin)
 - [ ] ExercisesNotes crud
-- [x] User crud(admin)
-- [ ] exercises crud(Admin)
-- [ ] Рецепти, можливість додавати рецепти самостійно- коментарі для рецептів + оцінка (суб'єктивна від користувача).
-- [ ] Додати фільтрацію по стоп-продуктах від користувача: не пропонувати рецепти з тими продуктами, що він не вживає.
-- [ ] Встановлення цілей, термінів та їх досягнення.
-- [ ] Відстеження прогресу мети (наприклад, набрати/скинути вагу): візуалізація за допомогою графіків.
-- [ ] Прогнозування від системи темпу досягнення мети користувача. Показувати якщо користувач випереджає ціль і якщо є відставання.
-- [ ] Видача ачівок для досягнення цілей (геймофікація процесу).
+- [ ] Water crud
+- [x] User crud(Admin)
+- [ ] Recipes crud
+- [ ] Recipes details with comments and upvotes
+- [ ] User settings for banned products
+- [ ] Next day calories limit
+- [ ] Set goal for loose/gain weight + graphs + predictions graphs
+- [ ] Achievements
+- [ ] Company statistics(t-3)
 
 ### FE 2
 
-- [ ] Лендінг сторінка, на якій буде інформація про застосунок, з можливістю завантажити мобільний застосунок або перейти до основної сторінки.
-- [ ] Авторизація через Google API Auth /Facebook.+ внутрішня.
-- [ ] API оплати - Преміум передплата: оплата за неї (3 види тарифних планів)
-- [ ] Прив'язка АРІ календаря: відстеження дедлайнів за метою
-- [ ] Шерінг досягнення мети Facebook/Twitter.
+- [ ] Landing(figma) + apk for mobile app
+- [ ] Google auth + custom auth
+- [ ] Stripe sandbox payment for 3 tiers
+- [ ] Google calendar goals integration
+- [ ] Share goal progress in Twitter
 
 ### MOBILE
 

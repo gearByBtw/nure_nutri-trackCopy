@@ -4,4 +4,6 @@ export type Recepie = {
   ingredients: string[];
   calories: number;
   description: string;
+  votes: string;
+  isPremium: boolean;
 };

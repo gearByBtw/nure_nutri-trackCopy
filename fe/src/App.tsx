@@ -5,7 +5,7 @@ import { AuthFallback } from "./components/Fallback";
 const App = () => {
   return (
     <AuthFallback>
-      <Nav isAdmin={false} />
+      <Nav />
       <hr />
       <Outlet />
     </AuthFallback>

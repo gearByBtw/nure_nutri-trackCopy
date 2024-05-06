@@ -3,6 +3,6 @@ export type CalorieNote = {
   userId: string;
   createdAt: string;
   calorie: number;
-  foodId: string;
-  foodName: string;
+  recepieId: string;
+  recepieName: string;
 };

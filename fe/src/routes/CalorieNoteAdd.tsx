@@ -14,6 +14,7 @@ import { useCalorieNoteCreate } from "../features/useCalorieNoteCreate";
 import { CalorieNote } from "../types/CalorieNote";
 import { UserContext } from "../components/Fallback";
 import { formatDateToYYYYMMDD } from "../utils/parseDate";
+import { useUserGetAllQuery } from "../features/useUserGetAllQuery";
 
 const CalorieNoteAdd = () => {
   const user = useContext(UserContext);
@@ -29,6 +30,7 @@ const CalorieNoteAdd = () => {
   const [error, setError] = useState<string>("");
 
   const recepies = useRecepieGetAllQuery({});
+  const users = useUserGetAllQuery({});
 
   const mutation = useCalorieNoteCreate(
     isEdit
@@ -51,8 +53,8 @@ const CalorieNoteAdd = () => {
       userId: user.id,
       createdAt: formatDateToYYYYMMDD(new Date()),
       calorie: 0,
-      foodId: "",
-      foodName: "",
+      recepieId: "",
+      recepieName: "",
     },
   });
 
@@ -66,8 +68,8 @@ const CalorieNoteAdd = () => {
       item.createdAt || formatDateToYYYYMMDD(new Date()),
     );
     form.setValue("calorie", item.calorie || 0);
-    form.setValue("foodId", item.foodId || "");
-    form.setValue("foodName", item.foodName || "");
+    form.setValue("recepieId", item.recepieId || "");
+    form.setValue("recepieName", item.recepieName || "");
   }, [items.data, isEdit, form, item, user.id]);
 
   const handleCreate = form.handleSubmit((data) => {
@@ -77,8 +79,8 @@ const CalorieNoteAdd = () => {
 
     if (
       !data.calorie ||
-      !data.foodId ||
-      !data.foodName ||
+      !data.recepieId ||
+      !data.recepieName ||
       !data.createdAt ||
       !datePattern.test(data.createdAt) ||
       !data.userId ||
@@ -89,9 +91,7 @@ const CalorieNoteAdd = () => {
     }
 
     mutation
-      .mutateAsync({
-        ...data,
-      })
+      .mutateAsync(data)
       .then(() => {
         navigate("/calories");
       })
@@ -157,29 +157,52 @@ const CalorieNoteAdd = () => {
               flexWrap: "wrap",
             }}
           >
-            <Controller
-              name="adress"
-              control={form.control}
-              render={({ field }) => (
-                <FormControl
-                  size="small"
-                  fullWidth
-                  sx={{ m: 1, minWidth: 120, maxWidth: "95%" }}
-                >
-                  <TextField
-                    label="Адреса"
-                    placeholder="12d-2"
-                    onChange={field.onChange}
-                    value={field.value}
+            {user.role === "admin" && (
+              <Controller
+                name="userId"
+                control={form.control}
+                render={({ field }) => (
+                  <FormControl
                     size="small"
-                    required
-                  />
-                </FormControl>
-              )}
-            />
+                    fullWidth
+                    error={users.isError}
+                    sx={{ m: 1, minWidth: 120, maxWidth: "95%" }}
+                  >
+                    <Autocomplete
+                      disablePortal
+                      onChange={(_, value) => {
+                        field.onChange(value || "");
+                      }}
+                      value={field.value}
+                      options={[
+                        "",
+                        ...(users.data || []).map((account) => account.id),
+                      ]}
+                      getOptionLabel={(option) => {
+                        const account = (users.data || []).find(
+                          (account) => account.id === option,
+                        );
+                        return account ? `${account.name}` : "";
+                      }}
+                      renderInput={(params) => (
+                        <TextField {...params} label="User" />
+                      )}
+                      size="small"
+                      disabled={
+                        users.isLoading || (!users.isLoading && users.isError)
+                      }
+                    />
+
+                    <FormHelperText component="span">
+                      {users.isError && <div>Something went wrong</div>}
+                    </FormHelperText>
+                  </FormControl>
+                )}
+              />
+            )}
 
             <Controller
-              name="number_of_places"
+              name="createdAt"
               control={form.control}
               render={({ field }) => (
                 <FormControl
@@ -188,49 +211,7 @@ const CalorieNoteAdd = () => {
                   sx={{ m: 1, minWidth: 120, maxWidth: "95%" }}
                 >
                   <TextField
-                    label="Кількість місць"
-                    placeholder="123"
-                    onChange={field.onChange}
-                    value={field.value}
-                    size="small"
-                    required
-                    type="number"
-                  />
-                </FormControl>
-              )}
-            />
-
-            <Controller
-              name="name_of_burried"
-              control={form.control}
-              render={({ field }) => (
-                <FormControl
-                  size="small"
-                  fullWidth
-                  sx={{ m: 1, minWidth: 120, maxWidth: "95%" }}
-                >
-                  <TextField
-                    label="Імʼя похованого"
-                    placeholder="Василь Грищенко"
-                    onChange={field.onChange}
-                    value={field.value}
-                    size="small"
-                  />
-                </FormControl>
-              )}
-            />
-
-            <Controller
-              name="date_of_burry"
-              control={form.control}
-              render={({ field }) => (
-                <FormControl
-                  size="small"
-                  fullWidth
-                  sx={{ m: 1, minWidth: 120, maxWidth: "95%" }}
-                >
-                  <TextField
-                    label="Дата поховання"
+                    label="Date"
                     placeholder="yyyy-mm-dd"
                     onChange={field.onChange}
                     value={field.value}
@@ -241,7 +222,7 @@ const CalorieNoteAdd = () => {
             />
 
             <Controller
-              name="order_id"
+              name="recepieId"
               control={form.control}
               render={({ field }) => (
                 <FormControl
@@ -253,23 +234,44 @@ const CalorieNoteAdd = () => {
                   <Autocomplete
                     disablePortal
                     onChange={(_, value) => {
-                      field.onChange(value || 0);
+                      field.onChange(value || "");
                     }}
                     value={field.value}
                     options={[
                       0,
-                      ...(recepies.data || []).map(
-                        (account) => account.order_id,
-                      ),
+                      ...(recepies.data || [])
+                        .filter((account) => {
+                          if (user.role === "admin") {
+                            return true;
+                          }
+
+                          if (
+                            account.isPremium &&
+                            user.subscription === "t-1"
+                          ) {
+                            return false;
+                          }
+
+                          if (
+                            user.bannedIngredients.some((i) =>
+                              account.ingredients.includes(i),
+                            )
+                          ) {
+                            return false;
+                          }
+
+                          return true;
+                        })
+                        .map((account) => account.id),
                     ]}
                     getOptionLabel={(option) => {
                       const account = (recepies.data || []).find(
-                        (account) => account.order_id === option,
+                        (account) => account.id === option,
                       );
-                      return account ? `${account.order_id}` : "";
+                      return account ? `${account.name}` : "";
                     }}
                     renderInput={(params) => (
-                      <TextField {...params} label="Замовлення" />
+                      <TextField {...params} label="Recipe" />
                     )}
                     size="small"
                     disabled={
@@ -279,7 +281,7 @@ const CalorieNoteAdd = () => {
                   />
 
                   <FormHelperText component="span">
-                    {recepies.isError && <div>Щось пішло не так</div>}
+                    {recepies.isError && <div>Something went wrong</div>}
                   </FormHelperText>
                 </FormControl>
               )}
@@ -294,7 +296,7 @@ const CalorieNoteAdd = () => {
               variant="contained"
               sx={{ m: 1, minWidth: 80 }}
             >
-              {isEdit ? "Змінити" : "Створити"}
+              {isEdit ? "Edit" : "Add"}
             </Button>
             <Button
               onClick={handleReset}
@@ -302,7 +304,7 @@ const CalorieNoteAdd = () => {
               color="error"
               sx={{ m: 1, minWidth: 80 }}
             >
-              Очистити
+              Clear
             </Button>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { Button, ButtonGroup } from "@mui/material";
+import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { UserContext } from "./Fallback";
 import { useContext } from "react";
@@ -20,18 +20,18 @@ export const Nav = () => {
         }}
       >
         {isAdmin && (
-          <ButtonGroup variant="contained">
-            <Link to="/users">
-              <Button>Users</Button>
-            </Link>
-          </ButtonGroup>
+          <Link to="/users">
+            <Button color="success">Users</Button>
+          </Link>
         )}
 
-        <ButtonGroup variant="contained">
-          <Link to="/calories">
-            <Button>Calories</Button>
-          </Link>
-        </ButtonGroup>
+        <Link to="/">
+          <Button color="success">Home</Button>
+        </Link>
+
+        <Link to="/calories">
+          <Button color="success">Calories</Button>
+        </Link>
       </div>
     </div>
   );

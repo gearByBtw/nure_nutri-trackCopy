@@ -45,8 +45,8 @@ export const CalorieNote = () => {
         sortable: false,
       },
       {
-        field: "foodName",
-        headerName: "Food",
+        field: "recepieName",
+        headerName: "Recipe",
         type: "string",
         sortable: false,
       },
