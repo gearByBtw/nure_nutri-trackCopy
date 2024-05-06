@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import { fetchAbstract } from "../utils/fetchAbstract";
 
 import { CalorieNote } from "../types/CalorieNote";
+import { urlBuilder } from "../utils/urlBuilder";
 
 export const useCalorieNoteGetAllQuery = (filter: {
   userId?: string;
@@ -12,7 +13,7 @@ export const useCalorieNoteGetAllQuery = (filter: {
     queryKey: ["calories-note", filter],
     queryFn: async () => {
       return (await fetchAbstract(
-        `calories?userId=${filter.userId}&createdAt=${filter.createdAt}&id=${filter.id}`,
+        urlBuilder("calories", filter),
         "GET",
       )) as CalorieNote[];
     },
