@@ -1,27 +1,20 @@
-import { ReactNode, createContext, useContext } from "react";
-import { useUserGetQuery } from "../features/useUserGetQuery";
+import { ReactNode, createContext } from "react";
 import { UserType } from "../types/User";
 
 export const UserContext = createContext<UserType>({} as UserType);
 
-export const RoleFallback = ({
-  type,
-  children,
-}: {
-  type: UserType["role"];
-  children: ReactNode;
-}) => {
-  const user = useContext(UserContext);
-
-  if (user.role !== type) {
-    return <div>Access denied</div>;
-  }
-
-  return children;
-};
-
 export const AuthFallback = ({ children }: { children: ReactNode }) => {
-  const { isLoading, data } = useUserGetQuery({ token: "1" });
+  const { isLoading, data } = {
+    isLoading: false,
+    data: {
+      id: "1",
+      name: "John Doe",
+      role: "admin",
+      subscription: "t-1",
+      email: "123@gmail.com",
+      bannedIngredients: [],
+    } as UserType,
+  }; // get authenticated user
 
   if (isLoading) {
     return <div>Loading...</div>;

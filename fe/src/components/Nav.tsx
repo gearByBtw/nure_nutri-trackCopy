@@ -1,20 +1,32 @@
 import { Button, ButtonGroup } from "@mui/material";
 import { Link } from "react-router-dom";
+import { UserContext } from "./Fallback";
+import { useContext } from "react";
 
-export const Nav = ({ isAdmin }: { isAdmin: boolean }) => {
-  if (isAdmin) {
-    return <>Todo</>;
-  }
+export const Nav = () => {
+  const user = useContext(UserContext);
+  const isAdmin = user.role === "admin";
 
   return (
     <div>
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
           alignItems: "center",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: 10,
         }}
       >
+        {isAdmin && (
+          <ButtonGroup variant="contained">
+            <Link to="/users">
+              <Button>Users</Button>
+            </Link>
+          </ButtonGroup>
+        )}
+
         <ButtonGroup variant="contained">
           <Link to="/calories">
             <Button>Calories</Button>
