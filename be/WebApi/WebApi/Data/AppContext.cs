@@ -6,6 +6,10 @@ namespace WebApi.Data;
 
 public class AppContext : IdentityDbContext<AppUser>
 {
+    public DbSet<CalorieNote> CalorieNotes { get; set; }
+    
+    public DbSet<Recepie> Recepies { get; set; }
+    
     public AppContext(DbContextOptions<AppContext> options) : base(options)
     {
     }

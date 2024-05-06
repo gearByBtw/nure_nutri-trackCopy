@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Dto;
+using WebApi.Enums;
 using WebApi.Models;
 using WebApi.Services.Interfaces;
 
@@ -25,7 +26,8 @@ public class AccountController : Controller
             FirstName = model.FirstName,
             LastName = model.LastName,
             Email = model.Email,
-            UserName = model.FirstName + model.LastName
+            UserName = model.FirstName + model.LastName,
+            Role = UserRole.User
         };
 
         var createResult = await _userService.AddUserAsync(appUser, model.Password);

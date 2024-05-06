@@ -52,14 +52,8 @@ public class Repository<T> : IRepository<T> where T : BaseModel
         await _dbSet.AddAsync(obj);
         await _dbContext.SaveChangesAsync();
     }
-    
-    public virtual async Task DeleteAsync(object id)
-    {
-        T entityToDelete = await _dbSet.FindAsync(id);
-        await Delete(entityToDelete);
-    }
 
-    public virtual async Task Delete(T entityToDelete)
+    public virtual async Task DeleteAsync(T entityToDelete)
     {
         if (_dbContext.Entry(entityToDelete).State == EntityState.Detached)
         {

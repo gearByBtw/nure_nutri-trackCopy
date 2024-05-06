@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.Data;
 
 #nullable disable
 
-namespace WebApi.Migrations
+namespace WebApi.Data.Migrations
 {
-    [DbContext(typeof(WebApi.Data.AppContext))]
-    [Migration("20240506095810_InitialCreating")]
-    partial class InitialCreating
+    [DbContext(typeof(AppContext))]
+    partial class AppContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -211,7 +208,14 @@ namespace WebApi.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subscription")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -232,6 +236,94 @@ namespace WebApi.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("WebApi.Models.CalorieNote", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Calorie")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RecepieId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("RecepieId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("RecepieName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecepieId1");
+
+                    b.ToTable("CalorieNotes");
+                });
+
+            modelBuilder.Entity("WebApi.Models.Ingredient", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("RecepieId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("RecepieId");
+
+                    b.ToTable("Ingredient");
+                });
+
+            modelBuilder.Entity("WebApi.Models.Recepie", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Calories")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPremium")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Votes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Recepies");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -283,6 +375,40 @@ namespace WebApi.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WebApi.Models.CalorieNote", b =>
+                {
+                    b.HasOne("WebApi.Models.Recepie", "Recepie")
+                        .WithMany("CalorieNotes")
+                        .HasForeignKey("RecepieId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Recepie");
+                });
+
+            modelBuilder.Entity("WebApi.Models.Ingredient", b =>
+                {
+                    b.HasOne("WebApi.Models.AppUser", null)
+                        .WithMany("BannedIngredients")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("WebApi.Models.Recepie", null)
+                        .WithMany("Ingredients")
+                        .HasForeignKey("RecepieId");
+                });
+
+            modelBuilder.Entity("WebApi.Models.AppUser", b =>
+                {
+                    b.Navigation("BannedIngredients");
+                });
+
+            modelBuilder.Entity("WebApi.Models.Recepie", b =>
+                {
+                    b.Navigation("CalorieNotes");
+
+                    b.Navigation("Ingredients");
                 });
 #pragma warning restore 612, 618
         }

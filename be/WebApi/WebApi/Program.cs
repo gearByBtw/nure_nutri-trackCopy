@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Data;
+using WebApi.Data.Interfaces;
 using WebApi.Models;
 using WebApi.Services;
 using WebApi.Services.Interfaces;
@@ -7,6 +9,7 @@ using WebApi.Services.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddDbContext<WebApi.Data.AppContext>(options =>

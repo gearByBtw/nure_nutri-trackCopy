@@ -23,5 +23,5 @@ public interface IRepository<T> where T : BaseModel
 
     Task UpdateAsync(Guid id, T updateObj);
 
-    Task DeleteAsync(object id);
+    Task DeleteAsync(T entity);
 }

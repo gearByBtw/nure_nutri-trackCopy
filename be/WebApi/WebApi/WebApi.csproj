@@ -32,7 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Enums\" />
+      <Folder Include="Data\Migrations\" />
     </ItemGroup>
 
 </Project>
