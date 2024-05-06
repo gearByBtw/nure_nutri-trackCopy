@@ -1,6 +1,4 @@
-# nure_nutri-track
-
-[Page](https://ggsmou.github.io/nure_nutri-track/)
+# [nure_nutri-track](https://ggsmou.github.io/nure_nutri-track/)
 
 ## Features tracking
 
