@@ -15,7 +15,7 @@ using System.Text;
 namespace NutritionalRecipeBook.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class IdentityController : ControllerBase
     {
         private readonly UserManager<User> _userManager;

@@ -8,7 +8,7 @@ namespace NutritionalRecipeBook.Api.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class ReviewsController : ControllerBase
     {
         private readonly IReviewService _reviewService;

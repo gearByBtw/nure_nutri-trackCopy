@@ -11,7 +11,7 @@ namespace NutritionalRecipeBook.Api.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class RecipesController : ControllerBase
     {
         private readonly IRecipeService _recipeService;
