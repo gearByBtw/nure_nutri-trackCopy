@@ -14,6 +14,7 @@ import { WaterNote } from "./routes/WaterNote";
 import WaterNoteAdd from "./routes/WaterNoteAdd";
 import Recepies from "./routes/Recepies";
 import RecepiesAdd from "./routes/RecepiesAdd";
+import RecepiesDetails from "./routes/RecepiesDetails";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +56,7 @@ const Router = () => {
             <Route path="recepies" element={<Recepies />} />
             <Route path="recepies/add" element={<RecepiesAdd />} />
             <Route path="recepies/edit/:id" element={<RecepiesAdd />} />
+            <Route path="recepies/details/:id" element={<RecepiesDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>

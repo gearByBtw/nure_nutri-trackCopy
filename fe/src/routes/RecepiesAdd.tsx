@@ -45,11 +45,11 @@ const RecepiesAdd = () => {
     defaultValues: {
       id: "",
       name: "",
-      ingredients: [], //!
+      ingredients: [],
       calories: 0,
       description: "",
-      votes: "",
-      isPremium: false, //
+      votes: 0,
+      isPremium: false,
       isCreatedByUser: user.role === "admin",
     },
   });
@@ -62,7 +62,7 @@ const RecepiesAdd = () => {
     form.setValue("ingredients", item.ingredients || []);
     form.setValue("calories", item.calories || 0);
     form.setValue("description", item.description || "");
-    form.setValue("votes", item.votes || "");
+    form.setValue("votes", item.votes || 0);
     form.setValue("isPremium", item.isPremium || false);
     form.setValue(
       "isCreatedByUser",

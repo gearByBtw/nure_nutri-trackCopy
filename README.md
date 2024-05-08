@@ -12,7 +12,7 @@ _Checked - to test. Crossed - done_
 - [x] Water crud
 - [x] User crud(Admin)
 - [x] Recipes crud
-- [ ] Recipes details with comments and upvotes
+- [x] Recipes details with comments and upvotes
 - [ ] User settings for banned products
 - [ ] Next day calories limit
 - [ ] Set goal for loose/gain weight + graphs + predictions graphs
