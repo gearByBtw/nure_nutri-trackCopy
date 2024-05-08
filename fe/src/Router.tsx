@@ -6,6 +6,8 @@ import { Users } from "./routes/Users";
 import UsersAdd from "./routes/UsersAdd";
 import { CalorieNote } from "./routes/CalorieNote";
 import CalorieNoteAdd from "./routes/CalorieNoteAdd";
+import { Exercises } from "./routes/Exercises";
+import ExercisesAdd from "./routes/ExercisesAdd";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +30,10 @@ const Router = () => {
               path="calories/edit/:calorieId"
               element={<CalorieNoteAdd />}
             />
+
+            <Route path="exercises" element={<Exercises />} />
+            <Route path="exercises/add" element={<ExercisesAdd />} />
+            <Route path="exercises/edit/:id" element={<ExercisesAdd />} />
           </Route>
         </Routes>
       </BrowserRouter>

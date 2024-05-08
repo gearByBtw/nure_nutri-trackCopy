@@ -2,15 +2,19 @@ export const urlBuilder = (
   urlString: string,
   queryObject: Record<string, unknown>,
 ) => {
-  const queryParams = new URLSearchParams(
-    Object.entries(queryObject)
+  const queryParams = new URLSearchParams([
+    ...(Object.entries(queryObject)
       .map(([key, value]) => {
-        if (value) {
+        if (value && key !== "id") {
           return [key, `${value}`];
         }
       })
-      .filter((x) => x) as string[][],
-  ).toString();
+      .filter((x) => x) as string[][]),
+    ["pageSize", "1000"],
+    ["pageNumber", "1"],
+  ]).toString();
 
-  return `${urlString}${queryParams ? `?${queryParams}` : ""}/`;
+  const idParam = queryObject.id ? `/${queryObject.id}` : "";
+
+  return `${urlString}${idParam}${queryParams ? `?${queryParams}` : ""}/`;
 };

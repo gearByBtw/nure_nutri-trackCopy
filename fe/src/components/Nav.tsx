@@ -32,6 +32,12 @@ export const Nav = () => {
             <Button color="success">Users</Button>
           </Link>
         )}
+
+        {isAdmin && (
+          <Link to="/exercises">
+            <Button color="success">Exercises</Button>
+          </Link>
+        )}
       </div>
     </div>
   );

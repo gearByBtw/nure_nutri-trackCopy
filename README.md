@@ -7,7 +7,7 @@ _Checked - to test. Crossed - done_
 ### FE 1
 
 - [x] CaloriesNotes for the day
-- [ ] Exercises crud(Admin)
+- [x] Exercises crud(Admin)
 - [ ] ExercisesNotes crud
 - [ ] Water crud
 - [x] User crud(Admin)

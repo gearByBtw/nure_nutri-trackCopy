@@ -5,17 +5,17 @@ import { Delete, Edit } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
 import { UserContext } from "../components/Fallback";
 import { getStyledDataGrid } from "../utils/getStyledDataGrid";
-import { useUserGetAllQuery } from "../features/useUserGetAllQuery";
-import { useUserDelete } from "../features/useUserDelete";
+import { useExerciseGetAllQuery } from "../features/useExerciseGetAllQuery";
+import { useExerciseDelete } from "../features/useExerciseDelete";
 
 const StyledDataGrid = getStyledDataGrid();
 
-export const Users = () => {
+export const Exercises = () => {
   const user = useContext(UserContext);
   const isAdmin = user.role === "admin";
 
-  const { error, isLoading, data, refetch } = useUserGetAllQuery({});
-  const deleteU = useUserDelete();
+  const { error, isLoading, data, refetch } = useExerciseGetAllQuery({});
+  const deleteU = useExerciseDelete();
   const [localError, setLocalError] = useState<string>("");
 
   const rows = data || [];
@@ -25,8 +25,9 @@ export const Users = () => {
       {
         field: "id",
         headerName: "ID",
-        type: "string",
+        type: "number",
         sortable: false,
+        width: 85,
       },
       {
         field: "name",
@@ -35,26 +36,14 @@ export const Users = () => {
         sortable: false,
       },
       {
-        field: "role",
-        headerName: "Role",
-        type: "string",
+        field: "calories",
+        headerName: "Calories",
+        type: "number",
         sortable: false,
       },
       {
-        field: "subscription",
-        headerName: "Subscription",
-        type: "string",
-        sortable: false,
-      },
-      {
-        field: "email",
-        headerName: "Email",
-        type: "string",
-        sortable: false,
-      },
-      {
-        field: "bannedIngredients",
-        headerName: "Banned Ingredients",
+        field: "description",
+        headerName: "Description",
         type: "string",
         sortable: false,
       },
@@ -66,7 +55,7 @@ export const Users = () => {
         renderCell: (cellValues) => {
           return (
             <>
-              <Link to={`/users/edit/${cellValues.row.id}`}>
+              <Link to={`/exercises/edit/${cellValues.row.id}`}>
                 <IconButton aria-label="edit">
                   <Edit />
                 </IconButton>
@@ -75,7 +64,7 @@ export const Users = () => {
                 aria-label="delete"
                 onClick={() => {
                   const confirm = window.confirm(
-                    `Confirm deletion of user ${cellValues.row.id}?`,
+                    `Confirm deletion of exercise ${cellValues.row.id}?`,
                   );
 
                   if (!confirm) {
@@ -129,9 +118,9 @@ export const Users = () => {
             marginBottom: ".25rem",
           }}
         >
-          <Link to="/users/add">
+          <Link to="/exercises/add">
             <Button variant="contained" color="success">
-              Add user
+              Add exercise
             </Button>
           </Link>
         </div>
@@ -168,4 +157,4 @@ export const Users = () => {
   );
 };
 
-export default Users;
+export default Exercises;
