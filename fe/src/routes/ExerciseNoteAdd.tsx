@@ -8,31 +8,31 @@ import {
   FormHelperText,
   TextField,
 } from "@mui/material";
-import { useCalorieNoteGetAllQuery } from "../features/useCalorieNoteGetAllQuery";
-import { useRecepieGetAllQuery } from "../features/useRecepieGetAllQuery";
-import { useCalorieNoteCreate } from "../features/useCalorieNoteCreate";
-import { CalorieNote } from "../types/CalorieNote";
 import { UserContext } from "../components/Fallback";
 import { formatDateToYYYYMMDD } from "../utils/parseDate";
 import { useUserGetAllQuery } from "../features/useUserGetAllQuery";
+import { useExerciseNoteGetAllQuery } from "../features/useExerciseNoteGetAllQuery";
+import { useExerciseGetAllQuery } from "../features/useExerciseGetAllQuery";
+import { useExercisesNoteCreate } from "../features/useExercisesNoteCreate";
+import { ExercisesNote } from "../types/ExercisesNote";
 
-const CalorieNoteAdd = () => {
+const ExerciseNoteAdd = () => {
   const user = useContext(UserContext);
-  const toEdit = useParams().calorieId;
+  const toEdit = useParams().id;
   const isEdit = toEdit !== undefined;
   const filter = isEdit
     ? {
         id: toEdit,
       }
     : {};
-  const items = useCalorieNoteGetAllQuery(filter);
+  const items = useExerciseNoteGetAllQuery(filter);
   const item = items.data?.[0];
   const [error, setError] = useState<string>("");
 
-  const recepies = useRecepieGetAllQuery({});
+  const exercises = useExerciseGetAllQuery({});
   const users = useUserGetAllQuery({});
 
-  const mutation = useCalorieNoteCreate(
+  const mutation = useExercisesNoteCreate(
     isEdit
       ? {
           type: "edit",
@@ -47,14 +47,14 @@ const CalorieNoteAdd = () => {
 
   const navigate = useNavigate();
 
-  const form = useForm<CalorieNote>({
+  const form = useForm<ExercisesNote>({
     defaultValues: {
       id: "",
       userId: user.id,
       createdAt: formatDateToYYYYMMDD(new Date()),
       calorie: 0,
-      recepieId: "",
-      recepieName: "",
+      exerciseId: "",
+      exerciseName: "",
     },
   });
 
@@ -68,8 +68,8 @@ const CalorieNoteAdd = () => {
       item.createdAt || formatDateToYYYYMMDD(new Date()),
     );
     form.setValue("calorie", item.calorie || 0);
-    form.setValue("recepieId", item.recepieId || "");
-    form.setValue("recepieName", item.recepieName || "");
+    form.setValue("exerciseId", item.exerciseId || "");
+    form.setValue("exerciseName", item.exerciseName || "");
   }, [items.data, isEdit, form, item, user.id]);
 
   const handleCreate = form.handleSubmit((data) => {
@@ -78,7 +78,7 @@ const CalorieNoteAdd = () => {
     const datePattern = /^\d{4}-\d{2}-\d{2}$/;
 
     if (
-      !data.recepieId ||
+      !data.exerciseId ||
       !data.createdAt ||
       !datePattern.test(data.createdAt) ||
       !data.userId
@@ -90,7 +90,7 @@ const CalorieNoteAdd = () => {
     mutation
       .mutateAsync(data)
       .then(() => {
-        navigate("/calories");
+        navigate("/exercises-notes");
       })
       .catch((err) => {
         setError(err.message);
@@ -123,7 +123,7 @@ const CalorieNoteAdd = () => {
               marginBlock: 30,
             }}
           >
-            {isEdit ? "Edit" : "Add"} Calorie Note
+            {isEdit ? "Edit" : "Add"} Exercise Note
             {isEdit && ` # ${toEdit}`}
           </h4>
         </div>
@@ -219,13 +219,13 @@ const CalorieNoteAdd = () => {
             />
 
             <Controller
-              name="recepieId"
+              name="exerciseId"
               control={form.control}
               render={({ field }) => (
                 <FormControl
                   size="small"
                   fullWidth
-                  error={recepies.isError}
+                  error={exercises.isError}
                   sx={{ m: 1, minWidth: 120, maxWidth: "95%" }}
                 >
                   <Autocomplete
@@ -236,49 +236,26 @@ const CalorieNoteAdd = () => {
                     value={field.value}
                     options={[
                       0,
-                      ...(recepies.data || [])
-                        .filter((account) => {
-                          if (user.role === "admin") {
-                            return true;
-                          }
-
-                          if (
-                            account.isPremium &&
-                            user.subscription === "t-1"
-                          ) {
-                            return false;
-                          }
-
-                          if (
-                            user.bannedIngredients.some((i) =>
-                              account.ingredients.includes(i),
-                            )
-                          ) {
-                            return false;
-                          }
-
-                          return true;
-                        })
-                        .map((account) => account.id),
+                      ...(exercises.data || []).map((account) => account.id),
                     ]}
                     getOptionLabel={(option) => {
-                      const account = (recepies.data || []).find(
+                      const account = (exercises.data || []).find(
                         (account) => account.id === option,
                       );
                       return account ? `${account.name}` : "";
                     }}
                     renderInput={(params) => (
-                      <TextField {...params} label="Recipe" />
+                      <TextField {...params} label="Exercise" />
                     )}
                     size="small"
                     disabled={
-                      recepies.isLoading ||
-                      (!recepies.isLoading && recepies.isError)
+                      exercises.isLoading ||
+                      (!exercises.isLoading && exercises.isError)
                     }
                   />
 
                   <FormHelperText component="span">
-                    {recepies.isError && <div>Something went wrong</div>}
+                    {exercises.isError && <div>Something went wrong</div>}
                   </FormHelperText>
                 </FormControl>
               )}
@@ -310,4 +287,4 @@ const CalorieNoteAdd = () => {
   );
 };
 
-export default CalorieNoteAdd;
+export default ExerciseNoteAdd;
