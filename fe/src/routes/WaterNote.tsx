@@ -3,23 +3,23 @@ import { Button, IconButton } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Delete, Edit } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
-import { useCalorieNoteGetAllQuery } from "../features/useCalorieNoteGetAllQuery";
 import { UserContext } from "../components/Fallback";
 import { formatDateToYYYYMMDD } from "../utils/parseDate";
-import { useCalorieNoteDelete } from "../features/useCalorieNoteDelete";
 import { getStyledDataGrid } from "../utils/getStyledDataGrid";
+import { useWaterNoteGetAllQuery } from "../features/useWaterNoteGetAllQuery";
+import { useWaterNoteDelete } from "../features/useWaterNoteDelete";
 
 const StyledDataGrid = getStyledDataGrid();
 
-export const CalorieNote = () => {
+export const WaterNote = () => {
   const user = useContext(UserContext);
   const isAdmin = user.role === "admin";
 
-  const { error, isLoading, data, refetch } = useCalorieNoteGetAllQuery({
+  const { error, isLoading, data, refetch } = useWaterNoteGetAllQuery({
     userId: isAdmin ? undefined : user.id,
     createdAt: isAdmin ? undefined : formatDateToYYYYMMDD(new Date()),
   });
-  const caloryNoteDelete = useCalorieNoteDelete();
+  const caloryNoteDelete = useWaterNoteDelete();
   const [localError, setLocalError] = useState<string>("");
 
   const rows = data || [];
@@ -39,15 +39,9 @@ export const CalorieNote = () => {
         sortable: false,
       },
       {
-        field: "calorie",
-        headerName: "Calorie",
+        field: "ml",
+        headerName: "Water (ml)",
         type: "number",
-        sortable: false,
-      },
-      {
-        field: "recepieName",
-        headerName: "Recipe",
-        type: "string",
         sortable: false,
       },
       {
@@ -58,7 +52,7 @@ export const CalorieNote = () => {
         renderCell: (cellValues) => {
           return (
             <>
-              <Link to={`/calories/edit/${cellValues.row.id}`}>
+              <Link to={`/water-notes/edit/${cellValues.row.id}`}>
                 <IconButton aria-label="edit">
                   <Edit />
                 </IconButton>
@@ -128,7 +122,7 @@ export const CalorieNote = () => {
             marginBottom: ".25rem",
           }}
         >
-          <Link to="/calories/add">
+          <Link to="/water-notes/add">
             <Button variant="contained" color="success">
               Add note
             </Button>
@@ -167,4 +161,4 @@ export const CalorieNote = () => {
   );
 };
 
-export default CalorieNote;
+export default WaterNote;

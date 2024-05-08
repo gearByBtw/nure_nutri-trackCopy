@@ -25,7 +25,7 @@ export const ExerciseNote = () => {
   const rows = data || [];
 
   const columns = useMemo(() => {
-    return [
+    const c = [
       {
         field: "id",
         headerName: "ID",
@@ -92,7 +92,18 @@ export const ExerciseNote = () => {
         },
       },
     ] as GridColDef[];
-  }, [caloryNoteDelete, refetch]);
+
+    if (isAdmin) {
+      c.push({
+        field: "userId",
+        headerName: "User ID",
+        type: "string",
+        sortable: false,
+      });
+    }
+
+    return c;
+  }, [caloryNoteDelete, refetch, isAdmin]);
 
   return (
     <>
