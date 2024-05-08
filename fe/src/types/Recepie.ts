@@ -6,4 +6,5 @@ export type Recepie = {
   description: string;
   votes: string;
   isPremium: boolean;
+  isCreatedByUser: boolean;
 };

@@ -35,6 +35,10 @@ export const Nav = () => {
           <Button color="success">Water</Button>
         </Link>
 
+        <Link to="/recepies">
+          <Button color="success">Recipes</Button>
+        </Link>
+
         {isAdmin && (
           <Link to="/users">
             <Button color="success">Users</Button>

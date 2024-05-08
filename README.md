@@ -4,14 +4,14 @@
 
 _Checked - to test. Crossed - done_
 
-### FE 1
+### FE Base
 
 - [x] CaloriesNotes for the day
 - [x] Exercises crud(Admin)
 - [x] ExercisesNotes crud
-- [ ] Water crud
+- [x] Water crud
 - [x] User crud(Admin)
-- [ ] Recipes crud
+- [x] Recipes crud
 - [ ] Recipes details with comments and upvotes
 - [ ] User settings for banned products
 - [ ] Next day calories limit
@@ -19,7 +19,7 @@ _Checked - to test. Crossed - done_
 - [ ] Achievements
 - [ ] Company statistics(t-3)
 
-### FE 2
+### FE Integrations
 
 - [ ] Landing(figma) + apk for mobile app
 - [ ] Google auth + custom auth
@@ -29,13 +29,11 @@ _Checked - to test. Crossed - done_
 
 ### MOBILE
 
-#### User
+#### User flow
 
 - [ ] відображено статистику за водою: загальна кількість випитої води за день/тиждень/місяць, графік за останній місяць/тиждень/рік
 - [ ] Нотифікації від сервісу: нагадування (наприклад, «не забудь попити води», внести що поїв) і загальні від системи (наприклад, що давно не заходив).
 
-#### Admin
+#### Admin flow
 
 - [ ] головна сторінка, на якій відображено графічну статистику використання сервісу: кількість активних користувачів за останній день/тиждень/рік, процентний розподіл за вправами та стравами у всьому сервіс
-
-### BE
