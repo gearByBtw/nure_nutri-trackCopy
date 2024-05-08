@@ -40,18 +40,25 @@ public class CalorieNotesController : Controller
     public async Task<IActionResult> AddCalorieNote(CalorieNoteDto model)
     {
         var recepie = await _recepieRepository.GetByIdAsync(model.RecepieId);
+        if (recepie == null)
+        {
+            return NotFound("Recepie not found");
+        }
         
         var calorieNote = new CalorieNote()
         {
             Calorie = model.Calorie,
             CreatedAt = DateTime.Now,
-            RecepieId = model.RecepieId,
-            RecepieName = model.RecepieName,
-            UserId = model.UserId,
-            Recepie = recepie
+            RecepieId = Guid.NewGuid(),
+            RecepieName = recepie.Name,
+            UserId = model.UserId
         };
+
+        recepie.CalorieNotes ??= new List<CalorieNote>();
+        recepie.CalorieNotes.Add(calorieNote);
         
-        await _calorieNoteRepository.AddAsync(calorieNote);
+        
+        await _recepieRepository.UpdateAsync(model.RecepieId, recepie);
         
         return CreatedAtAction(nameof(GetCalorieNote), new { id = calorieNote.Id }, calorieNote);
     }
