@@ -15,7 +15,7 @@ _Checked - to test. Crossed - done_
 - [x] Recipes details with comments and upvotes
 - [x] User settings for banned products
 - [x] Calories limit
-- [ ] Set goal for loose/gain weight + graphs + predictions graphs
+- [x] Set goal for loose/gain weight + graphs + predictions graphs
 - [ ] Achievements
 - [ ] Company statistics(t-3)
 

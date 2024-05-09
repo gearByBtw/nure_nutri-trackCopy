@@ -40,7 +40,7 @@ export const Nav = () => {
         </Link>
 
         <Link to="/settings">
-          <Button color="success">Settings</Button>
+          <Button color="success">User Details</Button>
         </Link>
 
         {isAdmin && (

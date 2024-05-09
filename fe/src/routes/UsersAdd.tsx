@@ -50,6 +50,8 @@ const UsersAdd = () => {
       email: "",
       bannedIngredients: "",
       dailyCalories: 0,
+      weight: 0,
+      desiredWeight: 0,
     },
   });
 
@@ -63,6 +65,8 @@ const UsersAdd = () => {
     form.setValue("email", item.email || "");
     form.setValue("bannedIngredients", item.bannedIngredients.join(", ") || "");
     form.setValue("dailyCalories", item.dailyCalories || 0);
+    form.setValue("weight", item.weight || 0);
+    form.setValue("desiredWeight", item.desiredWeight || 0);
   }, [items.data, isEdit, form, item, user.id]);
 
   const handleCreate = form.handleSubmit((data) => {
@@ -270,6 +274,50 @@ const UsersAdd = () => {
                 >
                   <TextField
                     label="Daily Calories"
+                    placeholder="0"
+                    onChange={field.onChange}
+                    value={field.value}
+                    size="small"
+                    required
+                    inputProps={{ type: "number" }}
+                  />
+                </FormControl>
+              )}
+            />
+
+            <Controller
+              name="weight"
+              control={form.control}
+              render={({ field }) => (
+                <FormControl
+                  size="small"
+                  fullWidth
+                  sx={{ m: 1, minWidth: 120, maxWidth: "95%" }}
+                >
+                  <TextField
+                    label="Weight"
+                    placeholder="0"
+                    onChange={field.onChange}
+                    value={field.value}
+                    size="small"
+                    required
+                    inputProps={{ type: "number" }}
+                  />
+                </FormControl>
+              )}
+            />
+
+            <Controller
+              name="desiredWeight"
+              control={form.control}
+              render={({ field }) => (
+                <FormControl
+                  size="small"
+                  fullWidth
+                  sx={{ m: 1, minWidth: 120, maxWidth: "95%" }}
+                >
+                  <TextField
+                    label="Desired Weight"
                     placeholder="0"
                     onChange={field.onChange}
                     value={field.value}

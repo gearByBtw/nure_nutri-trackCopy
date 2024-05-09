@@ -6,4 +6,6 @@ export type UserType = {
   email: string;
   bannedIngredients: string[];
   dailyCalories: number;
+  weight: number;
+  desiredWeight: number;
 };

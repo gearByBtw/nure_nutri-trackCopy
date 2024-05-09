@@ -14,6 +14,8 @@ export const AuthFallback = ({ children }: { children: ReactNode }) => {
       email: "123@gmail.com",
       bannedIngredients: ["1", "2", "3"],
       dailyCalories: 2000,
+      weight: 80,
+      desiredWeight: 70,
     } as UserType,
   }; // get authenticated user
 
