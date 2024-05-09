@@ -1,5 +1,5 @@
 import { useContext, useMemo, useState } from "react";
-import { Button, IconButton } from "@mui/material";
+import { Box, Button, IconButton, LinearProgress } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Delete, Edit } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
@@ -105,6 +105,10 @@ export const CalorieNote = () => {
     return c;
   }, [caloryNoteDelete, refetch, isAdmin]);
 
+  const callories = useMemo(() => {
+    return data?.reduce((acc, row) => acc + row.calorie, 0) || 0;
+  }, [data]);
+
   return (
     <>
       {error && (
@@ -118,9 +122,40 @@ export const CalorieNote = () => {
 
       <div
         style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
           marginBottom: "1rem",
         }}
       >
+        <Box sx={{ width: "300px" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <b>Daily calories:</b>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: ".25rem",
+              marginTop: ".5rem",
+            }}
+          >
+            <span>{callories}</span>
+            <span>{(callories / user.dailyCalories) * 100} %</span>
+            <span>{user.dailyCalories}</span>
+          </div>
+
+          <LinearProgress
+            variant="determinate"
+            value={Math.min((callories / user.dailyCalories) * 100, 100)}
+            color={callories > user.dailyCalories ? "error" : "success"}
+          />
+        </Box>
         <div
           style={{
             display: "flex",

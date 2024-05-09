@@ -48,7 +48,8 @@ const UsersAdd = () => {
       role: "user",
       subscription: "t-1",
       email: "",
-      bannedIngredients: [],
+      bannedIngredients: "",
+      dailyCalories: 0,
     },
   });
 
@@ -60,19 +61,14 @@ const UsersAdd = () => {
     form.setValue("role", item.role || "user");
     form.setValue("subscription", item.subscription || "t-1");
     form.setValue("email", item.email || "");
-    form.setValue("bannedIngredients", item.bannedIngredients || []);
+    form.setValue("bannedIngredients", item.bannedIngredients.join(", ") || "");
+    form.setValue("dailyCalories", item.dailyCalories || 0);
   }, [items.data, isEdit, form, item, user.id]);
 
   const handleCreate = form.handleSubmit((data) => {
     setError("");
 
-    if (
-      !data.name ||
-      !data.role ||
-      !data.subscription ||
-      !data.email ||
-      !data.bannedIngredients.length
-    ) {
+    if (!data.name || !data.role || !data.subscription || !data.email) {
       setError("Fill all fields");
       return;
     }
@@ -258,6 +254,28 @@ const UsersAdd = () => {
                     value={field.value}
                     size="small"
                     required
+                  />
+                </FormControl>
+              )}
+            />
+
+            <Controller
+              name="dailyCalories"
+              control={form.control}
+              render={({ field }) => (
+                <FormControl
+                  size="small"
+                  fullWidth
+                  sx={{ m: 1, minWidth: 120, maxWidth: "95%" }}
+                >
+                  <TextField
+                    label="Daily Calories"
+                    placeholder="0"
+                    onChange={field.onChange}
+                    value={field.value}
+                    size="small"
+                    required
+                    inputProps={{ type: "number" }}
                   />
                 </FormControl>
               )}

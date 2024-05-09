@@ -13,8 +13,8 @@ _Checked - to test. Crossed - done_
 - [x] User crud(Admin)
 - [x] Recipes crud
 - [x] Recipes details with comments and upvotes
-- [ ] User settings for banned products
-- [ ] Next day calories limit
+- [x] User settings for banned products
+- [x] Calories limit
 - [ ] Set goal for loose/gain weight + graphs + predictions graphs
 - [ ] Achievements
 - [ ] Company statistics(t-3)
