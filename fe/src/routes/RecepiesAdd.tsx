@@ -49,7 +49,7 @@ const RecepiesAdd = () => {
     defaultValues: {
       id: "",
       name: "",
-      ingredients: "",
+      ingredients: "" as unknown as [],
       calories: 0,
       description: "",
       votes: 0,
@@ -63,7 +63,10 @@ const RecepiesAdd = () => {
 
     form.setValue("id", item.id || "");
     form.setValue("name", item.name || "");
-    form.setValue("ingredients", item.ingredients.join(", ") || "");
+    form.setValue(
+      "ingredients",
+      (item.ingredients.join(", ") as unknown as []) || ("" as unknown as []),
+    );
     form.setValue("calories", item.calories || 0);
     form.setValue("description", item.description || "");
     form.setValue("votes", item.votes || 0);

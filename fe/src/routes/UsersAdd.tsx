@@ -50,7 +50,7 @@ const UsersAdd = () => {
       role: "user",
       subscription: "t-1",
       email: "",
-      bannedIngredients: "",
+      bannedIngredients: "" as unknown as [],
       dailyCalories: 0,
       weight: 0,
       desiredWeight: 0,
@@ -72,7 +72,10 @@ const UsersAdd = () => {
     form.setValue("role", item.role || "user");
     form.setValue("subscription", item.subscription || "t-1");
     form.setValue("email", item.email || "");
-    form.setValue("bannedIngredients", item.bannedIngredients.join(", ") || "");
+    form.setValue(
+      "bannedIngredients",
+      (item.bannedIngredients.join(", ") || "") as unknown as [],
+    );
     form.setValue("dailyCalories", item.dailyCalories || 0);
     form.setValue("weight", item.weight || 0);
     form.setValue("desiredWeight", item.desiredWeight || 0);

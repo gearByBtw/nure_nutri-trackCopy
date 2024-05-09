@@ -19,7 +19,19 @@ export type UserType = {
   social: boolean; // share progress
 };
 
-export const ACHIEVEMENTS = [
+export const ACHIEVEMENTS: {
+  name: string;
+  description: string;
+  icon: string;
+  key:
+    | "hydrated"
+    | "exercised"
+    | "ateHealthy"
+    | "chef"
+    | "critic"
+    | "criticTwoPointO"
+    | "social";
+}[] = [
   {
     name: "Hydrated",
     description: "Add water note",

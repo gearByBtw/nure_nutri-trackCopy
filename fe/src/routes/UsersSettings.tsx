@@ -108,7 +108,7 @@ const UsersSettings = () => {
       role: user.role,
       subscription: user.subscription,
       email: user.email,
-      bannedIngredients: user.bannedIngredients.join(", "),
+      bannedIngredients: user.bannedIngredients.join(", ") as unknown as [],
       dailyCalories: user.dailyCalories,
       weight: user.weight,
       desiredWeight: user.desiredWeight,
