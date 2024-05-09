@@ -16,6 +16,7 @@ import { Recepies } from "./routes/Recepies";
 import RecepiesAdd from "./routes/RecepiesAdd";
 import RecepiesDetails from "./routes/RecepiesDetails";
 import UsersSettings from "./routes/UsersSettings";
+import CompanyStats from "./routes/CompanyStats";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +61,8 @@ const Router = () => {
             <Route path="recepies/details/:id" element={<RecepiesDetails />} />
 
             <Route path="settings" element={<UsersSettings />} />
+
+            <Route path="stats" element={<CompanyStats />} />
           </Route>
         </Routes>
       </BrowserRouter>

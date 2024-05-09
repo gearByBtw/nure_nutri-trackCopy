@@ -6,6 +6,8 @@ _Checked - to test. Crossed - done_
 
 ### FE Base
 
+_to test when BE is ready_
+
 - [x] CaloriesNotes for the day
 - [x] Exercises crud(Admin)
 - [x] ExercisesNotes crud
@@ -17,7 +19,7 @@ _Checked - to test. Crossed - done_
 - [x] Calories limit
 - [x] Set goal for loose/gain weight + graphs + predictions graphs
 - [x] Achievements
-- [ ] Company statistics(t-3)
+- [x] Company statistics(t-3)
 
 ### FE Integrations
 

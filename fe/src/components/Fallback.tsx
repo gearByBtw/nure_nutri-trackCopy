@@ -10,7 +10,7 @@ export const AuthFallback = ({ children }: { children: ReactNode }) => {
       id: "1",
       name: "John Doe",
       role: "admin",
-      subscription: "t-1",
+      subscription: "t-3",
       email: "123@gmail.com",
       bannedIngredients: ["1", "2", "3"],
       dailyCalories: 2000,

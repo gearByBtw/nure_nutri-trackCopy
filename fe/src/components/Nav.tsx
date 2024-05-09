@@ -43,6 +43,12 @@ export const Nav = () => {
           <Button color="success">User Details</Button>
         </Link>
 
+        {(user.subscription === "t-3" || isAdmin) && (
+          <Link to="/stats">
+            <Button color="success">Company Stats</Button>
+          </Link>
+        )}
+
         {isAdmin && (
           <Link to="/users">
             <Button color="success">Users</Button>
