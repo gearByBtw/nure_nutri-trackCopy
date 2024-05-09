@@ -14,9 +14,11 @@ import { useUserGetAllQuery } from "../features/useUserGetAllQuery";
 import { useWaterNoteGetAllQuery } from "../features/useWaterNoteGetAllQuery";
 import { useWaterNoteCreate } from "../features/useWaterNoteCreate";
 import { WaterNote } from "../types/WaterNote";
+import { useUserDoneAchievement } from "../features/useUserDoneAchievement";
 
 const WaterNoteAdd = () => {
   const user = useContext(UserContext);
+  const achieve = useUserDoneAchievement();
   const toEdit = useParams().id;
   const isEdit = toEdit !== undefined;
   const filter = isEdit
@@ -84,7 +86,14 @@ const WaterNoteAdd = () => {
     mutation
       .mutateAsync(data)
       .then(() => {
-        navigate("/water-notes");
+        achieve
+          .mutateAsync({
+            id: user.id,
+            achievement: "hydrated",
+          })
+          .then(() => {
+            navigate("/water-notes");
+          });
       })
       .catch((err) => {
         setError(err.message);

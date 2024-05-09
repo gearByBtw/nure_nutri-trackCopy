@@ -16,7 +16,7 @@ _Checked - to test. Crossed - done_
 - [x] User settings for banned products
 - [x] Calories limit
 - [x] Set goal for loose/gain weight + graphs + predictions graphs
-- [ ] Achievements
+- [x] Achievements
 - [ ] Company statistics(t-3)
 
 ### FE Integrations
@@ -25,7 +25,7 @@ _Checked - to test. Crossed - done_
 - [ ] Google auth + custom auth
 - [ ] Stripe sandbox payment for 3 tiers
 - [ ] Google calendar goals integration
-- [ ] Share goal progress in Twitter
+- [ ] Share goal progress in Twitter + mark social achievement as done
 
 ### MOBILE
 

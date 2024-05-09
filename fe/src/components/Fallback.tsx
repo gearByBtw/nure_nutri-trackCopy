@@ -16,6 +16,14 @@ export const AuthFallback = ({ children }: { children: ReactNode }) => {
       dailyCalories: 2000,
       weight: 80,
       desiredWeight: 70,
+
+      hydrated: true,
+      exercised: true,
+      ateHealthy: false,
+      chef: true,
+      critic: false,
+      criticTwoPointO: true,
+      social: true,
     } as UserType,
   }; // get authenticated user
 

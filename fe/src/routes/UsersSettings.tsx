@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useMemo, useState } from "react";
 import { Button, FormControl, TextField } from "@mui/material";
 import { UserContext } from "../components/Fallback";
-import { UserType } from "../types/User";
+import { ACHIEVEMENTS, UserType } from "../types/User";
 import { useUsersCreate } from "../features/useUsersCreate";
 import { useCalorieNoteGetAllQuery } from "../features/useCalorieNoteGetAllQuery";
 import { CalorieNote } from "../types/CalorieNote";
@@ -112,6 +112,13 @@ const UsersSettings = () => {
       dailyCalories: user.dailyCalories,
       weight: user.weight,
       desiredWeight: user.desiredWeight,
+      hydrated: user.hydrated,
+      exercised: user.exercised,
+      ateHealthy: user.ateHealthy,
+      chef: user.chef,
+      critic: user.critic,
+      criticTwoPointO: user.criticTwoPointO,
+      social: user.social,
     },
   });
 
@@ -375,6 +382,105 @@ const UsersSettings = () => {
               ]}
             />
           </div>
+        </div>
+
+        <h4
+          style={{
+            textTransform: "uppercase",
+            fontWeight: "bold",
+            marginBlock: 15,
+            paddingTop: 100,
+          }}
+        >
+          Achievements
+        </h4>
+
+        <div
+          style={{
+            display: "flex",
+            // flexDirection: "column",
+            flexWrap: "wrap",
+            gap: 10,
+          }}
+        >
+          {ACHIEVEMENTS.map((a) => (
+            <div
+              key={a.key}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                padding: 10,
+                border: "1px solid #ccc",
+                alignItems: "center",
+                width: 200,
+                filter: user[a.key] ? "grayscale(0)" : "grayscale(1)",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "column",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: 24,
+                      marginRight: 10,
+                    }}
+                  >
+                    {a.icon}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 16,
+                    }}
+                  >
+                    <b>{a.name}</b>
+                  </span>
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: 24,
+                      marginRight: 10,
+                      visibility: "hidden",
+                    }}
+                  >
+                    {a.icon}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 16,
+                    }}
+                  >
+                    {a.description}
+                  </span>
+                </div>
+              </div>
+
+              <span
+                style={{
+                  fontSize: 24,
+                  color: user[a.key] ? "green" : "red",
+                }}
+              >
+                {user[a.key] ? "✅" : "❌"}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </>

@@ -3,7 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import {
   Button,
+  Checkbox,
   FormControl,
+  FormControlLabel,
   MenuItem,
   Select,
   TextField,
@@ -52,6 +54,13 @@ const UsersAdd = () => {
       dailyCalories: 0,
       weight: 0,
       desiredWeight: 0,
+      hydrated: false,
+      exercised: false,
+      ateHealthy: false,
+      chef: false,
+      critic: false,
+      criticTwoPointO: false,
+      social: false,
     },
   });
 
@@ -67,6 +76,13 @@ const UsersAdd = () => {
     form.setValue("dailyCalories", item.dailyCalories || 0);
     form.setValue("weight", item.weight || 0);
     form.setValue("desiredWeight", item.desiredWeight || 0);
+    form.setValue("hydrated", item.hydrated || false);
+    form.setValue("exercised", item.exercised || false);
+    form.setValue("ateHealthy", item.ateHealthy || false);
+    form.setValue("chef", item.chef || false);
+    form.setValue("critic", item.critic || false);
+    form.setValue("criticTwoPointO", item.criticTwoPointO || false);
+    form.setValue("social", item.social || false);
   }, [items.data, isEdit, form, item, user.id]);
 
   const handleCreate = form.handleSubmit((data) => {
@@ -326,6 +342,125 @@ const UsersAdd = () => {
                     inputProps={{ type: "number" }}
                   />
                 </FormControl>
+              )}
+            />
+
+            <Controller
+              name="hydrated"
+              control={form.control}
+              render={({ field }) => (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={field.onChange}
+                      value={field.value}
+                      size="small"
+                    />
+                  }
+                  label="Hydrated"
+                />
+              )}
+            />
+
+            <Controller
+              name="exercised"
+              control={form.control}
+              render={({ field }) => (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={field.onChange}
+                      value={field.value}
+                      size="small"
+                    />
+                  }
+                  label="Exercised"
+                />
+              )}
+            />
+
+            <Controller
+              name="ateHealthy"
+              control={form.control}
+              render={({ field }) => (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={field.onChange}
+                      value={field.value}
+                      size="small"
+                    />
+                  }
+                  label="Ate Healthy"
+                />
+              )}
+            />
+
+            <Controller
+              name="chef"
+              control={form.control}
+              render={({ field }) => (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={field.onChange}
+                      value={field.value}
+                      size="small"
+                    />
+                  }
+                  label="Chef"
+                />
+              )}
+            />
+
+            <Controller
+              name="critic"
+              control={form.control}
+              render={({ field }) => (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={field.onChange}
+                      value={field.value}
+                      size="small"
+                    />
+                  }
+                  label="Critic"
+                />
+              )}
+            />
+
+            <Controller
+              name="criticTwoPointO"
+              control={form.control}
+              render={({ field }) => (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={field.onChange}
+                      value={field.value}
+                      size="small"
+                    />
+                  }
+                  label="Critic 2.0"
+                />
+              )}
+            />
+
+            <Controller
+              name="social"
+              control={form.control}
+              render={({ field }) => (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={field.onChange}
+                      value={field.value}
+                      size="small"
+                    />
+                  }
+                  label="Social"
+                />
               )}
             />
           </form>

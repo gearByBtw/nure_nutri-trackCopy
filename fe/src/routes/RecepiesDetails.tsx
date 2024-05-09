@@ -9,6 +9,7 @@ import { RecepieComment } from "../types/RecepieComment";
 import { useRecepieCommentsGetAllQuery } from "../features/useRecepieCommentsGetAllQuery";
 import { ArrowDownward, ArrowUpward, Star } from "@mui/icons-material";
 import { useRecepieChangeVote } from "../features/useRecepieChangeVote";
+import { useUserDoneAchievement } from "../features/useUserDoneAchievement";
 
 const RecepiesDetails = () => {
   const user = useContext(UserContext);
@@ -22,6 +23,8 @@ const RecepiesDetails = () => {
   const item = items.data?.[0];
 
   const [error, setError] = useState<string>("");
+
+  const achieve = useUserDoneAchievement();
 
   const comments = useRecepieCommentsGetAllQuery({
     recepieId: id,
@@ -54,6 +57,11 @@ const RecepiesDetails = () => {
       .then(() => {
         comments.refetch();
         form.reset();
+
+        achieve.mutateAsync({
+          id: user.id,
+          achievement: "critic",
+        });
       })
       .catch((err) => {
         setError(err.message);
@@ -108,6 +116,11 @@ const RecepiesDetails = () => {
                 onClick={() => {
                   voteMut.mutateAsync({ id: item.id, type: "up" }).then(() => {
                     items.refetch();
+
+                    achieve.mutateAsync({
+                      id: user.id,
+                      achievement: "criticTwoPointO",
+                    });
                   });
                 }}
               >

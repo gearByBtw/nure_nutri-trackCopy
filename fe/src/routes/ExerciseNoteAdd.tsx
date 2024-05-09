@@ -15,6 +15,7 @@ import { useExerciseNoteGetAllQuery } from "../features/useExerciseNoteGetAllQue
 import { useExerciseGetAllQuery } from "../features/useExerciseGetAllQuery";
 import { useExercisesNoteCreate } from "../features/useExercisesNoteCreate";
 import { ExercisesNote } from "../types/ExercisesNote";
+import { useUserDoneAchievement } from "../features/useUserDoneAchievement";
 
 const ExerciseNoteAdd = () => {
   const user = useContext(UserContext);
@@ -28,6 +29,8 @@ const ExerciseNoteAdd = () => {
   const items = useExerciseNoteGetAllQuery(filter);
   const item = items.data?.[0];
   const [error, setError] = useState<string>("");
+
+  const achieve = useUserDoneAchievement();
 
   const exercises = useExerciseGetAllQuery({});
   const users = useUserGetAllQuery({});
@@ -90,7 +93,14 @@ const ExerciseNoteAdd = () => {
     mutation
       .mutateAsync(data)
       .then(() => {
-        navigate("/exercises-notes");
+        achieve
+          .mutateAsync({
+            id: user.id,
+            achievement: "exercised",
+          })
+          .then(() => {
+            navigate("/exercises-notes");
+          });
       })
       .catch((err) => {
         setError(err.message);

@@ -15,6 +15,7 @@ import { CalorieNote } from "../types/CalorieNote";
 import { UserContext } from "../components/Fallback";
 import { formatDateToYYYYMMDD } from "../utils/parseDate";
 import { useUserGetAllQuery } from "../features/useUserGetAllQuery";
+import { useUserDoneAchievement } from "../features/useUserDoneAchievement";
 
 const CalorieNoteAdd = () => {
   const user = useContext(UserContext);
@@ -31,6 +32,8 @@ const CalorieNoteAdd = () => {
 
   const recepies = useRecepieGetAllQuery({});
   const users = useUserGetAllQuery({});
+
+  const achieve = useUserDoneAchievement();
 
   const mutation = useCalorieNoteCreate(
     isEdit
@@ -90,7 +93,14 @@ const CalorieNoteAdd = () => {
     mutation
       .mutateAsync(data)
       .then(() => {
-        navigate("/calories");
+        achieve
+          .mutateAsync({
+            id: user.id,
+            achievement: "ateHealthy",
+          })
+          .then(() => {
+            navigate("/calories");
+          });
       })
       .catch((err) => {
         setError(err.message);

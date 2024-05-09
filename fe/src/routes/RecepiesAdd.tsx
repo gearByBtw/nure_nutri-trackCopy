@@ -12,6 +12,7 @@ import { UserContext } from "../components/Fallback";
 import { useRecepieGetAllQuery } from "../features/useRecepieGetAllQuery";
 import { useRecepieCreate } from "../features/useRecepieCreate";
 import { Recepie } from "../types/Recepie";
+import { useUserDoneAchievement } from "../features/useUserDoneAchievement";
 
 const RecepiesAdd = () => {
   const user = useContext(UserContext);
@@ -24,6 +25,9 @@ const RecepiesAdd = () => {
     : {};
   const items = useRecepieGetAllQuery(filter);
   const item = items.data?.[0];
+
+  const achieve = useUserDoneAchievement();
+
   const [error, setError] = useState<string>("");
 
   const mutation = useRecepieCreate(
@@ -89,7 +93,14 @@ const RecepiesAdd = () => {
         ingredients: data.ingredients.toString().split(", "),
       })
       .then(() => {
-        navigate("/recepies");
+        achieve
+          .mutateAsync({
+            id: user.id,
+            achievement: "chef",
+          })
+          .then(() => {
+            navigate("/recepies");
+          });
       })
       .catch((err) => {
         setError(err.message);
