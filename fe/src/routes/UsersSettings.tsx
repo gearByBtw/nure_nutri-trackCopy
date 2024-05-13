@@ -9,7 +9,10 @@ import { useCalorieNoteGetAllQuery } from "../features/useCalorieNoteGetAllQuery
 import { CalorieNote } from "../types/CalorieNote";
 import { BarChart, LineChart } from "@mui/x-charts";
 
-const MIDDLE_CCALS_PER_DAY = 2250;
+import { useExerciseNoteGetAllQuery } from "../features/useExerciseNoteGetAllQuery";
+import { ExercisesNote } from "../types/ExercisesNote";
+
+const MIDDLE_CCALS_PER_DAY = 2000;
 
 const calcDays = () => {
   const now = new Date();
@@ -39,6 +42,10 @@ const UsersSettings = () => {
     userId: user.id,
   });
 
+  const exNotesQ = useExerciseNoteGetAllQuery({
+    userId: user.id,
+  });
+
   const preparedCalNotes = useMemo(() => {
     if (!calNotesQ.data) {
       return [];
@@ -59,6 +66,26 @@ const UsersSettings = () => {
     return Object.values(c).slice(0, 31);
   }, [calNotesQ.data]);
 
+  const preparedExNotes = useMemo(() => {
+    if (!exNotesQ.data) {
+      return [];
+    }
+
+    const c = [...exNotesQ.data]
+      .sort((a, b) => +b.createdAt - +a.createdAt)
+      .reduce((acc: Record<string, number>, curr: ExercisesNote) => {
+        if (!acc[curr.createdAt]) {
+          acc[curr.createdAt] = 0;
+        }
+
+        acc[curr.createdAt] += curr.calorie;
+
+        return acc;
+      }, {});
+
+    return Object.values(c).slice(0, 31);
+  }, [exNotesQ.data]);
+
   const [daysData, kilos, newWeight] = useMemo(() => {
     let total = 0;
 
@@ -68,15 +95,19 @@ const UsersSettings = () => {
       }
 
       const ccal = preparedCalNotes[i] || 0; // Math.floor(1500 + Math.random() * 3000);
+      const ex = preparedExNotes[i] || 0; // Math.floor(0 + Math.random() * 3000);
 
-      total += ccal;
-      return ccal;
+      const finalCcal = ccal - ex - MIDDLE_CCALS_PER_DAY;
+
+      total += finalCcal;
+
+      return finalCcal;
     });
 
-    const extrapolatedTotalCals = (total / new Date().getDate()) * days.length;
+    const extrapolatedTotalCals =
+      (total / (new Date().getDate() + 1)) * days.length;
     const totalKilos = extrapolatedTotalCals / 7700;
     const kilosPerDay = totalKilos / days.length;
-    const ccalsPerDay = extrapolatedTotalCals / days.length;
 
     // kilos
 
@@ -84,20 +115,16 @@ const UsersSettings = () => {
 
     const kilos = ccals.map((ccal) => {
       if (!ccal) {
-        const sign = ccalsPerDay > MIDDLE_CCALS_PER_DAY ? 1 : -1;
-        currWeight += kilosPerDay * sign;
-
+        currWeight += kilosPerDay;
         return currWeight;
       }
 
-      const sign = ccal > MIDDLE_CCALS_PER_DAY ? 1 : -1;
-      currWeight += (ccal / 7700) * sign;
-
+      currWeight += ccal / 7700;
       return currWeight;
     });
 
     return [ccals, kilos, currWeight];
-  }, [preparedCalNotes, user.weight]);
+  }, [preparedCalNotes, preparedExNotes, user.weight]);
 
   const navigate = useNavigate();
 
