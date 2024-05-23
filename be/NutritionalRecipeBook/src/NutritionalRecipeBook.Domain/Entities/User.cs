@@ -7,5 +7,7 @@ namespace NutritionalRecipeBook.Domain.Entities
         public List<UserRecipe> FavoriteRecipes { get; set; }
 
         public List<UserIngredient> ShoppingList { get; set; }
+
+        public Hydration? Hydration { get; set; }
     }
 }
