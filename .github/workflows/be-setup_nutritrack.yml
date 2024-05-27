@@ -23,7 +23,7 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release --project "C:\Users\tokar\source\repos\nure_nutri-track\be\NutritionalRecipeBook\src\NutritionalRecipeBook.Api\NutritionalRecipeBook.Api.csproj"
+        run: dotnet build NutritionalRecipeBook.Api.csproj --configuration Release 
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
