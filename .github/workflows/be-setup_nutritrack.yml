@@ -30,7 +30,7 @@ jobs:
       - name: Clear wwwroot folder
         run: |
           az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-          az webapp ssh --resource-group <ResourceGroupName> --name <AppName> --command "cd D:\home\site\wwwroot && del * /F /Q /S"
+          az webapp ssh --resource-group pol-RG --name nutritrack --command "cd D:\home\site\wwwroot && del * /F /Q /S"
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
