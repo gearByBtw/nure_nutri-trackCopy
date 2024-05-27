@@ -1,40 +1,59 @@
-name: Build and deploy nutritrack
+name: Сборка и развертывание приложения .NET Core в веб-приложение nutritrack
 
 on:
   push:
     branches:
       - be-setup
-  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: nutritrack
+  CONFIGURATION: Release
+  DOTNET_CORE_VERSION: 8.0.x
+  WORKING_DIRECTORY: be/NutritionalRecipeBook/src/NutritionalRecipeBook.Api
+  PACKAGE_PATH: be/NutritionalRecipeBook/src/NutritionalRecipeBook.Api/publish
 
 jobs:
   build:
     runs-on: windows-latest
-
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v1
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.x'
+          dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
 
       - name: Restore
-        run: dotnet restore ./be/NutritionalRecipeBook/src/NutritionalRecipeBook.sln
-        
-      - name: Build 
-        run: dotnet build ./be/NutritionalRecipeBook/src/NutritionalRecipeBook.sln --configuration Release --no-restore 
+        run: dotnet restore ${{ env.WORKING_DIRECTORY }}
+
+      - name: Build
+        run: dotnet build ${{ env.WORKING_DIRECTORY }} --configuration ${{ env.CONFIGURATION }} --no-restore
+
+      - name: Test
+        run: dotnet test ${{ env.WORKING_DIRECTORY }} --no-build
 
       - name: Publish
-        run: dotnet publish ./be/NutritionalRecipeBook/src/NutritionalRecipeBook.sln --configuration Release --no-build --output ./publish
+        run: dotnet publish ${{ env.WORKING_DIRECTORY }} --configuration ${{ env.CONFIGURATION }} --no-build --output ${{ env.PACKAGE_PATH }}
 
-      - name: Clear wwwroot folder
-        run: |
-          az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-          az webapp ssh --resource-group pol-RG --name nutritrack --command "cd D:\home\site\wwwroot && del * /F /Q /S"
+      - name: Publish Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: webapp
+          path: ${{ env.PACKAGE_PATH }}
 
-      - name: Deploy to Azure Web App
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: webapp
+          path: ${{ env.PACKAGE_PATH }}
+
+      - name: Deploy to Azure WebApp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'nutritrack'
-          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
-          package: './publish'
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ${{ env.PACKAGE_PATH }}
