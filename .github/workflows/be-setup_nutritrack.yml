@@ -12,6 +12,10 @@ env:
   WORKING_DIRECTORY: be/NutritionalRecipeBook/src/NutritionalRecipeBook.Api
   PACKAGE_PATH: be/NutritionalRecipeBook/src/NutritionalRecipeBook.Api/publish
 
+permissions:
+  id-token: write
+  contents: read
+  
 jobs:
   build:
     runs-on: windows-latest
