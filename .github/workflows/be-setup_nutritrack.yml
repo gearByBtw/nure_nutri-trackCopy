@@ -1,77 +1,38 @@
-name: Сборка и развертывание приложения .NET Core в веб-приложение nutritrack
+variables:
+  AZURE_WEBAPP_API_NAME: "nutritrack"
+  AZURE_RESOURCE_GROUP: "pol-RG"
+  AZURE_TENANT_ID: "df7af033-797d-45df-a398-a177b1e00f28"
 
-on:
-  push:
-    branches:
-      - be-setup
+stages:
+  - build
+  - deploy
 
-env:
-  AZURE_WEBAPP_NAME: nutritrack
-  CONFIGURATION: Release
-  DOTNET_CORE_VERSION: 8.0.x
-  WORKING_DIRECTORY: be/NutritionalRecipeBook/src/NutritionalRecipeBook.Api
-  PACKAGE_PATH: be/NutritionalRecipeBook/src/NutritionalRecipeBook.Api/publish
+before_script:
+  - cd $CI_PROJECT_DIR
 
-permissions:
-  id-token: write
-  contents: read
-  
-jobs:
-  build:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
+build-api:
+  image: mcr.microsoft.com/dotnet/sdk:8.0.101
+  stage: build
+  script:
+    - cd NutritionalRecipeBook/src
+    - dotnet publish -c Release -o ./publish
+  artifacts:
+       paths: 
+          - $CI_PROJECT_DIR/NutritionalRecipeBook/src/publish/*
+  only:
+    - develop
 
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
-
-      - name: Restore
-        run: dotnet restore ${{ env.WORKING_DIRECTORY }}
-
-      - name: Build
-        run: dotnet build ${{ env.WORKING_DIRECTORY }} --configuration ${{ env.CONFIGURATION }} --no-restore
-
-      - name: Test
-        run: dotnet test ${{ env.WORKING_DIRECTORY }} --no-build
-
-      - name: Publish
-        run: dotnet publish ${{ env.WORKING_DIRECTORY }} --configuration ${{ env.CONFIGURATION }} --no-build --output ${{ env.PACKAGE_PATH }}
-
-      - name: Publish Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: webapp
-          path: ${{ env.PACKAGE_PATH }}
-
-  deploy:
-    runs-on: windows-latest
-    needs: build
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
-        with:
-          name: webapp
-          path: ${{ env.PACKAGE_PATH }}
-      - name: Azure login
-        uses: azure/login@v2
-        with:
-          client-id: 9e96d794-0342-4142-a95c-b1d15b619749
-          tenant-id: df7af033-797d-45df-a398-a177b1e00f28
-          subscription-id: 75007266-0abb-4634-8625-491a9f5dcf58
-          enable-AzPSSession: true
-
-      - name: Azure CLI script
-        uses: azure/cli@v2
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az account show
-            
-      - name: Deploy to Azure WebApp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.PACKAGE_PATH }}
+deploy-api:
+  image: mcr.microsoft.com/dotnet/sdk:8.0.101
+  stage: deploy
+  dependencies:
+    - build-api
+  script:
+    - apt-get update 
+    - apt-get install zip unzip
+    - curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+    - cd $CI_PROJECT_DIR/NutritionalRecipeBook/src/publish
+    - zip -r ../publish.zip .
+    - cd ..
+    - az login --tenant $AZURE_TENANT_ID
+    - az webapp deployment source config-zip --resource-group $AZURE_RESOURCE_GROUP --name $AZURE_WEBAPP_API_NAME --src publish.zip
