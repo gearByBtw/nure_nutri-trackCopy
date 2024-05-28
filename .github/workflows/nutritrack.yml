@@ -69,13 +69,18 @@ jobs:
             Remove-Item -Path "C:\local\Temp\zipdeploy\*" -Recurse -Force
           }
         shell: pwsh
-          
-      - name: Deploy to Azure WebApp
+
+      - name: Diagnose deployment package
+        run: |
+          Write-Output "Checking deployment package contents"
+          Get-ChildItem -Path ${{ env.PACKAGE_PATH }} -Recurse
+        shell: pwsh
+
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ${{ env.PACKAGE_PATH }}
           slot-name: production
-          
+            
 
