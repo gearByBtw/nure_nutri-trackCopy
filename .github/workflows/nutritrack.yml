@@ -61,6 +61,11 @@ jobs:
           tenant-id: df7af033-797d-45df-a398-a177b1e00f28
           subscription-id: 75007266-0abb-4634-8625-491a9f5dcf58
           enable-AzPSSession: true
+
+      - name: Clean up previous deployments
+        run: |
+          echo "Cleaning up previous deployments"
+          rm -rf /local/Temp/zipdeploy/*
           
       - name: Deploy to Azure WebApp
         uses: azure/webapps-deploy@v2
