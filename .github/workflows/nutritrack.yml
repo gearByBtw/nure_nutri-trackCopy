@@ -65,7 +65,9 @@ jobs:
       - name: Clean up previous deployments
         run: |
           Write-Output "Cleaning up previous deployments"
-          Remove-Item -Path "C:\local\Temp\zipdeploy\*" -Recurse -Force
+          if (Test-Path -Path "C:\local\Temp\zipdeploy") {
+            Remove-Item -Path "C:\local\Temp\zipdeploy\*" -Recurse -Force
+          }
         shell: pwsh
           
       - name: Deploy to Azure WebApp
