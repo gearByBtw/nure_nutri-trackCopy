@@ -64,8 +64,9 @@ jobs:
 
       - name: Clean up previous deployments
         run: |
-          echo "Cleaning up previous deployments"
-          rm -rf /local/Temp/zipdeploy/*
+          Write-Output "Cleaning up previous deployments"
+          Remove-Item -Path "C:\local\Temp\zipdeploy\*" -Recurse -Force
+        shell: pwsh
           
       - name: Deploy to Azure WebApp
         uses: azure/webapps-deploy@v2
